@@ -56,13 +56,7 @@ npm run dev
 - **Documentation Agent**: Transforms transcripts into structured SOAP notes
 - **Verification Agent**: Reviews and validates documentation quality
 
-## 🤝 Contributing
 
-Contributions welcome! Please read our contribution guidelines before submitting pull requests.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 🔒 Privacy & Compliance
 
