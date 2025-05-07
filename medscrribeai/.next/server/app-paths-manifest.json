@@ -1,7 +1,9 @@
 {
-  "/patients/page": "app/patients/page.js",
-  "/page": "app/page.js",
-  "/patients/[patientId]/page": "app/patients/[patientId]/page.js",
   "/visits/[visitId]/page": "app/visits/[visitId]/page.js",
-  "/documentation/[visitId]/page": "app/documentation/[visitId]/page.js"
+  "/documentation/[visitId]/page": "app/documentation/[visitId]/page.js",
+  "/visits/[visitId]/edit/page": "app/visits/[visitId]/edit/page.js",
+  "/documentation/page": "app/documentation/page.js",
+  "/visits/page": "app/visits/page.js",
+  "/patients/page": "app/patients/page.js",
+  "/page": "app/page.js"
 }

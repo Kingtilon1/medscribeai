@@ -78,6 +78,20 @@ async def get_visit(visit_id: int):
         raise HTTPException(status_code=404, detail="Visit not found")
     return visit
 
+@app.get("/api/visits")
+async def get_all_visits():
+    async with database_service.get_connection() as conn:
+        async with conn.cursor() as cursor:
+            query = """
+            SELECT v.*, p.FirstName, p.LastName 
+            FROM Visits v JOIN Patients p ON v.PatientID = p.PatientID 
+            ORDER BY v.VisitDate DESC
+            """
+            await cursor.execute(query)
+            columns = [column[0] for column in cursor.description]
+            rows = await cursor.fetchall()
+            return [dict(zip(columns, row)) for row in rows]
+        
 @app.post("/api/patients")
 async def create_patient(
     first_name: str = Body(...),
@@ -158,9 +172,14 @@ async def save_transcript(
     transcript_text: str = Form(...)
 ):
     try:
+        print(f"Saving transcript for visit_id: {visit_id}, length: {len(transcript_text)} chars")
         transcript_id = await database_service.save_transcript(visit_id, transcript_text)
+        print(f"Saved transcript with ID: {transcript_id}")
         return {"transcript_id": transcript_id, "message": "Transcript saved successfully"}
     except Exception as e:
+        import traceback
+        print(f"Error saving transcript: {str(e)}")
+        print(traceback.format_exc())
         raise HTTPException(status_code=500, detail=f"Failed to save transcript: {str(e)}")
 
 @app.post("/api/documentation/save-soap")
@@ -179,6 +198,36 @@ async def save_soap_note(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to save SOAP note: {str(e)}")
 
+
+@app.post("/api/visits/{visit_id}/update")
+async def update_visit(
+    visit_id: int,
+    patient_id: str = Form(...),  # Keep as string to match form data
+    visit_date: str = Form(...),
+    visit_type: str = Form(...),
+    reason: str = Form(...),
+    status: str = Form(...),
+    provider_id: str = Form("1")  # Default to 1 if not provided
+):
+    try:
+        # Convert string to int for IDs
+        patient_id_int = int(patient_id)
+        provider_id_int = int(provider_id)
+        
+        # Format date if needed
+        formatted_date = visit_date
+        if "T" in visit_date:  # If in ISO format
+            formatted_date = visit_date.split("T")[0]
+            
+        await database_service.update_visit(
+            visit_id, patient_id_int, provider_id_int, 
+            formatted_date, visit_type, status, reason
+        )
+        return {"message": "Visit updated successfully"}
+    except Exception as e:
+        print(f"Error updating visit: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to update visit: {str(e)}")
+    
 @app.post("/api/visits/{visit_id}/update-status")
 async def update_visit_status(
     visit_id: int,
@@ -189,6 +238,30 @@ async def update_visit_status(
         return {"message": f"Visit status updated to {status}"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to update visit status: {str(e)}")
+    
+@app.get("/api/documentation/transcript/{visit_id}")
+async def get_transcript(visit_id: int):
+    try:
+        transcript = await database_service.get_transcript_for_visit(visit_id)
+        if transcript:
+            return transcript
+        else:
+            raise HTTPException(status_code=404, detail="No transcript found for this visit")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch transcript: {str(e)}")
+
+@app.get("/api/documentation/soap/{visit_id}")
+async def get_soap_note(visit_id: int):
+    try:
+        soap_note = await database_service.get_soap_note_for_visit(visit_id)
+        if soap_note:
+            return soap_note
+        else:
+            raise HTTPException(status_code=404, detail="No SOAP note found for this visit")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch SOAP note: {str(e)}")
+    
+    
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

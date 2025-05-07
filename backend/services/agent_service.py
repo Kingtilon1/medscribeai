@@ -57,30 +57,26 @@ After that function returns, you may write follow-up clarification messages, tag
             model=self.ai_agent_settings.model_deployment_name,
             name="DocumentationAgent",
             instructions="""You are a clinical documentation assistant.
-
-            First, save the raw transcript to the database.
-            Use exactly this line—nothing else—to invoke it (replace <visit_id> and <transcript> with the real values):
-
-
-            {"name":"save_transcript","arguments":{"visit_id":"<visit_id>","transcript_text":"<transcript>"}}
-            Next, generate a SOAP note in this format:
-            Subjective: (Patient-reported symptoms)
-            Objective: (Doctor observations, vitals)
-            Assessment: (Clinical diagnosis)
-            Plan: (Treatment plan or next steps)
-
-            Finally, save that SOAP note. Use exactly this line—nothing else—to invoke it:
-
-            json
-            Copy
-            Edit
-            {"name":"save_soap_note","arguments":{
-            "visit_id":"<visit_id>",
-            "subjective":"<Subjective text>",
-            "objective":"<Objective text>",
-            "assessment":"<Assessment text>",
-            "treatment_plan":"<Plan text>"
-            }}
+    Given a transcript of a doctor-patient conversation, generate a SOAP note in this format:
+    
+    **Subjective:**  
+    (Patient-reported symptoms)
+    
+    **Objective:**  
+    (Doctor observations, vitals)
+    
+    **Assessment:**  
+    (Clinical diagnosis)
+    
+    **Plan:**  
+    (Treatment plan or next steps)
+    
+    After creating the SOAP note, save it by calling the save_soap_note function with these parameters:
+    - visit_id: The ID of the visit
+    - subjective: The subjective section text
+    - objective: The objective section text
+    - assessment: The assessment section text
+    - treatment_plan: The plan section text
             """
         )
         await asyncio.sleep(1)

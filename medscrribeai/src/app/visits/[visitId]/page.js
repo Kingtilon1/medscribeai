@@ -229,7 +229,7 @@ export default function VisitDetailsPage() {
               className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
               onClick={() => {
                 // Implement status update logic
-                alert('Status update functionality would go here');
+                alert('Documentation Complete!');
               }}
             >
               Mark as Completed

@@ -22,7 +22,6 @@ class DatabaseService:
         self.connection_string = (
         os.getenv('AZURE_SQL_CONNECTIONSTRING')
     )
-        print("Loaded connection string:", repr(self.connection_string))
         # In a production app, you would set up connection pooling here
 
     @asynccontextmanager
@@ -56,7 +55,32 @@ class DatabaseService:
                 if result:
                     return dict(zip([column[0] for column in cursor.description], result))
                 return None
-
+   
+    async def update_visit(self, visit_id, patient_id, provider_id, visit_date, visit_type, status, reason):
+        """Update a visit in the database"""
+        async with self.get_connection() as conn:
+            async with conn.cursor() as cursor:
+                query = """
+                UPDATE Visits 
+                SET PatientID = ?, 
+                    ProviderID = ?,
+                    VisitDate = ?, 
+                    VisitType = ?, 
+                    Status = ?, 
+                    Reason = ?,
+                    UpdatedDate = GETDATE()
+                WHERE VisitID = ?
+                """
+                await cursor.execute(query, (
+                    patient_id, 
+                    provider_id,
+                    visit_date, 
+                    visit_type, 
+                    status, 
+                    reason,
+                    visit_id
+                ))
+            
     async def get_provider(self, provider_id):
         """Get provider information by ID"""
         async with self.get_connection() as conn:
@@ -90,6 +114,20 @@ class DatabaseService:
                 columns = [column[0] for column in cursor.description]
                 rows = await cursor.fetchall()
                 return [dict(zip(columns, row)) for row in rows]
+    async def get_all_visits(self):
+        """Get all visits with patient information"""
+        async with self.get_connection() as conn:
+            async with conn.cursor() as cursor:
+                query = """
+                SELECT v.*, p.FirstName, p.LastName 
+                FROM Visits v JOIN Patients p ON v.PatientID = p.PatientID 
+                ORDER BY v.VisitDate DESC
+                """
+                await cursor.execute(query)
+                columns = [column[0] for column in cursor.description]
+                rows = await cursor.fetchall()
+                return [dict(zip(columns, row)) for row in rows]
+        
     async def get_visit(self, visit_id):
         """Get a single visit by ID, regardless of status"""
         async with self.get_connection() as conn:
@@ -154,18 +192,58 @@ class DatabaseService:
                 result = await cursor.fetchone()
                 return result[0]
 
+
+    async def get_transcript_for_visit(self, visit_id):
+        """Get the most recent transcript for a specific visit"""
+        async with self.get_connection() as conn:
+            async with conn.cursor() as cursor:
+                query = """
+                SELECT TOP 1 TranscriptID, VisitID, TranscriptText, RecordedDate
+                FROM Transcripts
+                WHERE VisitID = ?
+                ORDER BY RecordedDate DESC
+                """
+                await cursor.execute(query, (visit_id,))
+                result = await cursor.fetchone()
+                
+                if result:
+                    columns = [column[0] for column in cursor.description]
+                    return dict(zip(columns, result))
+                return None
+
+    async def get_soap_note_for_visit(self, visit_id):
+        """Get the most recent SOAP note for a specific visit"""
+        async with self.get_connection() as conn:
+            async with conn.cursor() as cursor:
+                query = """
+                SELECT TOP 1 NoteID, VisitID, Subjective, Objective, Assessment, Plans
+                FROM SOAPNotes
+                WHERE VisitID = ?
+                ORDER BY CreatedDate DESC
+                """
+                await cursor.execute(query, (visit_id,))
+                result = await cursor.fetchone()
+                
+                if result:
+                    columns = [column[0] for column in cursor.description]
+                    return dict(zip(columns, result))
+                return None
+        
     async def save_transcript(self, visit_id, transcript_text):
         """Save a transcript to the database"""
         async with self.get_connection() as conn:
             async with conn.cursor() as cursor:
-                query = """
+                # First, execute the INSERT statement
+                insert_query = """
                 INSERT INTO Transcripts (VisitID, TranscriptText, RecordedDate)
                 VALUES (?, ?, ?);
-                SELECT SCOPE_IDENTITY();
                 """
-                await cursor.execute(query, (visit_id, transcript_text, datetime.datetime.now()))
-                transcript_id = await cursor.fetchone()
-                return transcript_id[0]
+                await cursor.execute(insert_query, (visit_id, transcript_text, datetime.datetime.now()))
+                
+                # Then, get the ID of the inserted record
+                await cursor.execute("SELECT SCOPE_IDENTITY()")
+                result = await cursor.fetchone()
+                return result[0]  # Return the new transcript ID
     async def update_visit_status(self, visit_id, status):
         """Update visit status in the database"""
         async with self.get_connection() as conn:
@@ -181,11 +259,14 @@ class DatabaseService:
         """Save a SOAP note to the database"""
         async with self.get_connection() as conn:
             async with conn.cursor() as cursor:
-                query = """
-                INSERT INTO SOAPNotes (VisitID, Subjective, Objective, Assessment, TreatmentPlan)
+                # First, execute the INSERT statement
+                insert_query = """
+                INSERT INTO SOAPNotes (VisitID, Subjective, Objective, Assessment, Plans)
                 VALUES (?, ?, ?, ?, ?);
-                SELECT SCOPE_IDENTITY();
                 """
-                await cursor.execute(query, (visit_id, subjective, objective, assessment, treatment_plan))
-                note_id = await cursor.fetchone()
-                return note_id[0]
+                await cursor.execute(insert_query, (visit_id, subjective, objective, assessment, treatment_plan))
+                
+                # Then, get the ID of the inserted record
+                await cursor.execute("SELECT SCOPE_IDENTITY()")
+                result = await cursor.fetchone()
+                return result[0]  # Return the new note ID

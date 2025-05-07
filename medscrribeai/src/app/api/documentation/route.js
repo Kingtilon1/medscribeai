@@ -27,3 +27,11 @@ export async function fetchVisit(visitId) {
   return await response.json();
 }
 
+export async function fetchAllVisits() {
+  const response = await fetch(`${API_BASE_URL}/visits`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch visits: ${response.statusText}`);
+  }
+  return await response.json();
+}
+
