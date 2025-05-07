@@ -65,18 +65,7 @@ export default function AppBar({ providerName = "Dr. Smith" }) {
           {/* Right side items: Search, User, Mobile menu button */}
           <div className="flex items-center">
             {/* Search Bar */}
-            <form onSubmit={handleSearch} className="hidden md:block relative mr-3">
-              <input
-                type="text"
-                placeholder="Search patients..."
-                className="bg-blue-700/30 text-white placeholder-blue-200 rounded-full py-1 px-4 focus:outline-none focus:ring-2 focus:ring-white"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <button type="submit" className="absolute right-3 top-1.5 text-blue-200">
-                <Search size={16} />
-              </button>
-            </form>
+            
 
             {/* User Menu */}
             <div className="hidden md:flex items-center border-l border-blue-500 ml-2 pl-4">
