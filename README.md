@@ -67,3 +67,12 @@ npm run dev
 ## 🔒 Privacy & Compliance
 
 MedScribeAI is designed with HIPAA compliance in mind. Please consult with your compliance team before deploying in a clinical setting.
+
+
+# License
+
+All rights reserved.
+
+Copyright © Tilon 2025
+
+Unauthorized copying, distribution, modification, or use of this code, in whole or in part, is strictly prohibited without prior written permission from the author.
