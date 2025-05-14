@@ -2,6 +2,8 @@
 
 MedScribeAI is a sophisticated full-stack application designed to revolutionize medical documentation by leveraging AI to transcribe doctor-patient interactions and generate structured clinical notes. This tool helps healthcare providers spend less time on paperwork and more time on patient care.
 
+https://github.com/user-attachments/assets/76890cfd-3036-4827-90a5-8a0954358905
+
 ## 🔍 Overview
 
 This AI assistant streamlines the medical documentation process by automatically converting conversations into professional SOAP notes and other clinical documentation, saving healthcare providers valuable time while improving documentation quality.
@@ -39,6 +41,10 @@ npm install
 4. Start the backend:
 uvicorn main --reload
 5. Start the frontend:
+
+
+
+
 npm run dev
 
 ## 📝 Usage
@@ -61,3 +67,12 @@ npm run dev
 ## 🔒 Privacy & Compliance
 
 MedScribeAI is designed with HIPAA compliance in mind. Please consult with your compliance team before deploying in a clinical setting.
+
+
+# License
+
+All rights reserved.
+
+Copyright © Tilon 2025
+
+Unauthorized copying, distribution, modification, or use of this code, in whole or in part, is strictly prohibited without prior written permission from the author.
