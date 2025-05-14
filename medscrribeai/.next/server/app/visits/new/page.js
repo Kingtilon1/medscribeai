@@ -246,7 +246,7 @@ module.exports = require("path");
 var __webpack_require__ = require("../../../webpack-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = __webpack_require__.X(0, ["vendor-chunks/next","vendor-chunks/@swc","vendor-chunks/lucide-react"], () => (__webpack_exec__("(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fvisits%2Fnew%2Fpage&page=%2Fvisits%2Fnew%2Fpage&appPaths=%2Fvisits%2Fnew%2Fpage&pagePath=private-next-app-dir%2Fvisits%2Fnew%2Fpage.js&appDir=C%3A%5CUsers%5Cbobbt%5CDownloads%5Chealthai%5Cmedscrribeai%5Csrc%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=C%3A%5CUsers%5Cbobbt%5CDownloads%5Chealthai%5Cmedscrribeai&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D!")));
+var __webpack_exports__ = __webpack_require__.X(0, ["vendor-chunks/next","vendor-chunks/lucide-react","vendor-chunks/@swc"], () => (__webpack_exec__("(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fvisits%2Fnew%2Fpage&page=%2Fvisits%2Fnew%2Fpage&appPaths=%2Fvisits%2Fnew%2Fpage&pagePath=private-next-app-dir%2Fvisits%2Fnew%2Fpage.js&appDir=C%3A%5CUsers%5Cbobbt%5CDownloads%5Chealthai%5Cmedscrribeai%5Csrc%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=C%3A%5CUsers%5Cbobbt%5CDownloads%5Chealthai%5Cmedscrribeai&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D!")));
 module.exports = __webpack_exports__;
 
 })();

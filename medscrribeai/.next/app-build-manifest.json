@@ -16,6 +16,11 @@
       "static/chunks/main-app.js",
       "static/chunks/app/patients/page.js"
     ],
+    "/patients/new/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/patients/new/page.js"
+    ],
     "/patients/[patientId]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -25,6 +30,11 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/visits/new/page.js"
+    ],
+    "/documentation/[visitId]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/documentation/[visitId]/page.js"
     ],
     "/visits/page": [
       "static/chunks/webpack.js",
@@ -36,25 +46,10 @@
       "static/chunks/main-app.js",
       "static/chunks/app/visits/[visitId]/page.js"
     ],
-    "/documentation/[visitId]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/documentation/[visitId]/page.js"
-    ],
     "/visits/[visitId]/edit/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/visits/[visitId]/edit/page.js"
-    ],
-    "/documentation/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/documentation/page.js"
-    ],
-    "/patients/new/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/patients/new/page.js"
     ]
   }
 }

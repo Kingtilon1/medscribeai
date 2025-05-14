@@ -1,8 +1,9 @@
 {
-  "/documentation/[visitId]/page": "app/documentation/[visitId]/page.js",
-  "/visits/[visitId]/edit/page": "app/visits/[visitId]/edit/page.js",
-  "/documentation/page": "app/documentation/page.js",
   "/patients/page": "app/patients/page.js",
+  "/page": "app/page.js",
+  "/visits/new/page": "app/visits/new/page.js",
+  "/documentation/[visitId]/page": "app/documentation/[visitId]/page.js",
   "/visits/page": "app/visits/page.js",
-  "/page": "app/page.js"
+  "/visits/[visitId]/edit/page": "app/visits/[visitId]/edit/page.js",
+  "/visits/[visitId]/page": "app/visits/[visitId]/page.js"
 }

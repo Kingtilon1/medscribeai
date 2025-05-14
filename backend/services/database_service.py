@@ -7,6 +7,7 @@ import asyncio
 
 class DatabaseService:
     _instance = None
+    current_organization_id = 1
 
     @classmethod
     def get_instance(cls):
@@ -14,6 +15,9 @@ class DatabaseService:
             cls._instance = DatabaseService()
             cls._instance.initialize()
         return cls._instance
+    
+    def set_organization_id(self, org_id):
+        self.current_organization_id = org_id
 
     def initialize(self):
 
